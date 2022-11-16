@@ -19,6 +19,7 @@ calc_grammar = """
          | "-" atom         -> neg
          | NAME             -> var
          | "(" sum ")"
+
     %import common.CNAME -> NAME
     %import common.NUMBER
     %import common.WS_INLINE
@@ -30,6 +31,7 @@ calc_grammar = """
 class CalculateTree(Transformer):
     from operator import add, sub, mul, truediv as div, neg
     number = float
+    add = add
 
     def __init__(self):
         self.vars = {}
