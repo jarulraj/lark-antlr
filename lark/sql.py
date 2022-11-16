@@ -48,11 +48,11 @@ sql_grammar = """
 
         // keywords
         // define keywords as they have higher priority
-        SELECT.5           : "select"i
-        FROM.5             : "from"i
-        WHERE.5            : "where"i
-        JOIN.5             : "join"i
-        ON.5               : "on"i
+        SELECT           : "select"i
+        FROM             : "from"i
+        WHERE            : "where"i
+        JOIN             : "join"i
+        ON               : "on"i
 
         // operators
         STAR              : "*"
@@ -106,6 +106,9 @@ class SQLVisitor(Visitor):
         print("table_name: " + table_name)
         return table_name
 
+    def select_clause(self, tree):
+        print(tree.pretty)
+
 
 if __name__ == '__main__':
     sql_parser = Lark(sql_grammar, parser='lalr')
@@ -114,4 +117,4 @@ if __name__ == '__main__':
     visitor.visit(tree)
 
     a = tree.pretty()
-    print(a)
+    #print(a)
