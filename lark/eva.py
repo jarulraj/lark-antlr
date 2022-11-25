@@ -1,4 +1,4 @@
-from lark import Lark, Visitor, visitors
+from lark import Lark, Visitor, visitors, Transformer
 from pprint import pprint
 
 class LarkParser(object):
@@ -262,6 +262,18 @@ class RenameTableStatement(AbstractStatement):
             and self.new_table_name == other.new_table_name
         )
 
+class EVATransformer(Transformer):
+
+    def __init__(self, source):
+        super().__init__()
+        self.source = source
+        self.stmts = []
+
+    def table_name(self, full_id: str) -> TableInfo:
+        table_name = str(full_id)
+        print(table_name)
+        return TableInfo(table_name)
+
 
 class Interpreter(visitors.Interpreter):
 
@@ -276,21 +288,10 @@ class Interpreter(visitors.Interpreter):
         return self.visit(tree.children[0])
 
     def rename_table(self, tree):
-
-        #print(tree.children[0])
-        #print(tree.children[1])
-        #print(tree.children[2])
-        #print(tree.children[3])
-        #print(tree.children[4])
-
         old_table_info = self.visit(tree.children[2])
         new_table_info = self.visit(tree.children[4])
 
         return RenameTableStatement(TableRef(old_table_info), new_table_info)
-
-        #old_table_ref = TableRef(self.visit(tree.children[1]))
-        #new_table_name = self.visit(tree.children[3])
-        #rename_stmt = RenameTableStatement(old_table_ref, new_table_name)
 
     def table_name(self, tree):
         table_name = self.visit(tree.children[0])
@@ -324,4 +325,7 @@ if __name__ == '__main__':
 
     if(output[0][0] == expected_stmt):
         print("equal")
+    
 
+    transformer = EVATransformer(source)
+    output = transformer.transform(tree)
