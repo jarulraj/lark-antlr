@@ -262,18 +262,6 @@ class RenameTableStatement(AbstractStatement):
             and self.new_table_name == other.new_table_name
         )
 
-class EVATransformer(Transformer):
-
-    def __init__(self, source):
-        super().__init__()
-        self.source = source
-        self.stmts = []
-
-    def table_name(self, full_id: str) -> TableInfo:
-        table_name = str(full_id)
-        print(table_name)
-        return TableInfo(table_name)
-
 
 class Interpreter(visitors.Interpreter):
 
