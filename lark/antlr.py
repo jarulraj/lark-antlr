@@ -65,7 +65,7 @@ class T(Transformer):
         return Discard
 
     def expansions(self, x):
-        return '\n    | '.join(x)
+        return '\n    | '.join(str(x))
 
     def term_expansions(self, x):
         return '\n    | '.join(x)
@@ -79,6 +79,9 @@ class T(Transformer):
 
     def term_expansion(self, x):
         return "(" + ' '.join(x) + ")"
+
+    def alias(self, x):
+        return x;
 
     @v_args(inline=True)
     def expr(self, expr, op):
@@ -114,7 +117,7 @@ class T(Transformer):
         return '\n\n'.join(stmts)
 
 
-with open('evaql_parser.g4') as f:
+with open('lark/evaql_parser.g4') as f:
     res = parser.parse(f.read())
     # print('###', res.pretty())
     try:
